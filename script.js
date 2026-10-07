@@ -359,22 +359,16 @@ function getSeriesKanjis(
    KANJI DE REVISION
 ========================================================= */
 
-function getReviewKanji(
+function getReviewKanjis(
     seriesNumber,
     currentIndexes
 ) {
 
-    if (
-        seriesNumber === 0
-    ) {
-
-        return null;
-
+    if (seriesNumber === 0) {
+        return [];
     }
 
-
     let previousIndexes = [];
-
 
     for (
         let i = 0;
@@ -385,48 +379,35 @@ function getReviewKanji(
         const previous =
             getSeriesKanjis(i);
 
-
         previous.forEach(index => {
 
             if (
                 learned.includes(index)
             ) {
 
-                previousIndexes.push(
-                    index
-                );
-
+                previousIndexes.push(index);
             }
 
         });
-
     }
-
 
     previousIndexes =
         previousIndexes.filter(
             index =>
-                !currentIndexes.includes(
-                    index
-                )
+                !currentIndexes.includes(index)
         );
-
 
     if (
         previousIndexes.length === 0
     ) {
 
-        return null;
-
+        return [];
     }
 
+    previousIndexes =
+        shuffle(previousIndexes);
 
-    return previousIndexes[
-        Math.floor(
-            Math.random() *
-            previousIndexes.length
-        )
-    ];
+    return previousIndexes.slice(0, 2);
 }
 
 
@@ -527,22 +508,18 @@ function prepareSeries() {
        on ajoute 1 ancien kanji
     */
 
-    const reviewKanji =
-        getReviewKanji(
-            currentSeries,
-            baseIndexes
-        );
+// Ajouter 2 kanjis de révision
+const reviewKanjis =
+    getReviewKanjis(
+        currentSeries,
+        baseIndexes
+    );
 
+reviewKanjis.forEach(index => {
 
-    if (
-        reviewKanji !== null
-    ) {
+    baseIndexes.push(index);
 
-        baseIndexes.push(
-            reviewKanji
-        );
-
-    }
+});
 
 
     /*
@@ -1297,36 +1274,64 @@ function validateSeries() {
     ).innerHTML = "";
 
 
-    document.getElementById(
-        "result"
-    ).innerHTML =
-        `
-        <div class="successMessage">
+    const sentence =
+    getSeriesSentence(
+        currentSeries
+    );
 
-            🏆 <strong>Série validée !</strong>
 
-            <br><br>
+document.getElementById(
+    "result"
+).innerHTML =
+    `
+    <div class="successMessage">
 
-            Score :
-            <strong>
-                ${score} / ${exerciseKanjis.length * 2}
-            </strong>
+        🏆 <strong>Série validée !</strong>
 
-            <br>
+        <br><br>
 
-            100 % 🎉
+        Score :
+        <strong>
+            ${score} / ${exerciseKanjis.length * 2}
+        </strong>
 
-            <br><br>
+        <br>
 
-            Tu as réussi cette série
-            <strong>3 fois de suite</strong>.
+        100 % 🎉
 
-            <br><br>
+        <br><br>
 
-            Les 5 kanjis sont maintenant acquis !
+        Tu as réussi cette série
+        <strong>3 fois de suite</strong>.
 
+        <br><br>
+
+        Les 5 kanjis sont maintenant acquis !
+
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #c8e5cc;">
+
+        📖 <strong>Exemple de phrase</strong>
+
+        <div style="
+            font-size: 28px;
+            margin: 15px 0;
+        ">
+            ${sentence.japonais}
         </div>
-        `;
+
+        <div style="
+            font-size: 18px;
+            color: #555;
+        ">
+            ${sentence.hiragana}
+        </div>
+
+        <br>
+
+        🇫🇷 ${sentence.francais}
+
+    </div>
+    `;
 
 
     document.getElementById(
@@ -1441,3 +1446,132 @@ function resetProgress() {
 ========================================================= */
 
 showMenu();
+
+function getSeriesSentence(seriesNumber) {
+
+    const sentences = [
+
+        {
+            japonais: "一から五です。",
+            hiragana: "いちから ごです。",
+            francais: "De un à cinq."
+        },
+
+        {
+            japonais: "六から十です。",
+            hiragana: "ろくから じゅうです。",
+            francais: "De six à dix."
+        },
+
+        {
+            japonais: "百円です。",
+            hiragana: "ひゃくえんです。",
+            francais: "C'est 100 yens."
+        },
+
+        {
+            japonais: "火です。",
+            hiragana: "ひです。",
+            francais: "C'est du feu."
+        },
+
+        {
+            japonais: "今月です。",
+            hiragana: "こんげつです。",
+            francais: "C'est ce mois-ci."
+        },
+
+        {
+            japonais: "毎日です。",
+            hiragana: "まいにちです。",
+            francais: "C'est tous les jours."
+        },
+
+        {
+            japonais: "上です。",
+            hiragana: "うえです。",
+            francais: "C'est au-dessus."
+        },
+
+        {
+            japonais: "左と右です。",
+            hiragana: "ひだりと みぎです。",
+            francais: "C'est la gauche et la droite."
+        },
+
+        {
+            japonais: "大きくて安いです。",
+            hiragana: "おおきくて やすいです。",
+            francais: "C'est grand et bon marché."
+        },
+
+        {
+            japonais: "古くないです。",
+            hiragana: "ふるくないです。",
+            francais: "Ce n'est pas vieux."
+        },
+
+        {
+            japonais: "白いです。",
+            hiragana: "しろいです。",
+            francais: "C'est blanc."
+        },
+
+        {
+            japonais: "雨の日です。",
+            hiragana: "あめの ひです。",
+            francais: "C'est un jour de pluie."
+        },
+
+        {
+            japonais: "山に人がいます。",
+            hiragana: "やまに ひとが います。",
+            francais: "Il y a une personne à la montagne."
+        },
+
+        {
+            japonais: "男の子です。",
+            hiragana: "おとこのこです。",
+            francais: "C'est un garçon."
+        },
+
+        {
+            japonais: "学校です。",
+            hiragana: "がっこうです。",
+            francais: "C'est une école."
+        },
+
+        {
+            japonais: "日本語です。",
+            hiragana: "にほんごです。",
+            francais: "C'est du japonais."
+        },
+
+        {
+            japonais: "店へ行きます。",
+            hiragana: "みせへ いきます。",
+            francais: "Je vais au magasin."
+        },
+
+        {
+            japonais: "本を読みます。",
+            hiragana: "ほんを よみます。",
+            francais: "Je lis un livre."
+        },
+
+        {
+            japonais: "水を飲みます。",
+            hiragana: "みずを のみます。",
+            francais: "Je bois de l'eau."
+        },
+
+        {
+            japonais: "日本語を使います。",
+            hiragana: "にほんごを つかいます。",
+            francais: "J'utilise le japonais."
+        }
+
+    ];
+
+    return sentences[seriesNumber];
+}
