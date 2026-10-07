@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kanji Quiz</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================= MENU ================= -->
+
+    <div id="menu">
+
+        <h1>🎌 Kanji Quiz</h1>
+
+        <p class="subtitle">
+            Apprends les kanjis progressivement
+        </p>
+
+        <div class="progress">
+            <span id="progressText">0 / 100 kanjis acquis</span>
+
+            <div class="progressBar">
+                <div id="progressFill"></div>
+            </div>
+        </div>
+
+        <h2>📚 Mes kanjis</h2>
+
+        <div id="kanjiList"></div>
+
+        <button class="mainButton" onclick="startExercise()">
+            📝 Commencer l'exercice
+        </button>
+
+        <button class="resetButton" onclick="resetProgress()">
+            Réinitialiser la progression
+        </button>
+
+    </div>
+
+
+    <!-- ================= EXERCICE ================= -->
+
+    <div id="exercise" style="display:none;">
+
+        <button class="backButton" onclick="backToMenu()">
+            ← Menu
+        </button>
+
+        <p id="seriesTitle"></p>
+
+        <div class="seriesProgress">
+            Série réussie :
+            <strong id="seriesSuccess">0 / 3</strong>
+        </div>
+
+        <p id="stepTitle">
+            Étape 1 : Lecture en hiragana
+        </p>
+
+        <div id="question"></div>
+
+        <div id="answers"></div>
+
+        <div id="result"></div>
+
+        <button
+            id="nextButton"
+            class="mainButton"
+            onclick="nextStep()"
+            style="display:none;">
+            Continuer
+        </button>
+
+        <p id="score"></p>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
