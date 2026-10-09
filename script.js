@@ -410,6 +410,36 @@ function getReviewKanjis(
     return previousIndexes.slice(0, 2);
 }
 
+function startReviewTest() {
+
+    // Récupérer uniquement les kanjis validés
+    const available = [...learned];
+
+    if (available.length === 0) {
+        alert(
+            "Tu dois d'abord valider une série pour faire ce test !"
+        );
+        return;
+    }
+
+    // Choisir 10 kanjis au maximum
+    exerciseKanjis = shuffle(available).slice(0, 10);
+
+    currentSeries = -1;
+    currentKanjiIndex = 0;
+    score = 0;
+
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("exercise").style.display = "block";
+
+    document.getElementById("seriesTitle").textContent =
+        "Test de révision";
+
+    document.getElementById("seriesSuccess").textContent =
+        "Test libre";
+
+    prepareReviewTest();
+}
 
 /* =========================================================
    COMMENCER EXERCICE
@@ -870,20 +900,21 @@ function nextStep() {
     currentKanjiIndex++;
 
 
-    if (
-        currentKanjiIndex >=
-        exerciseKanjis.length
-    ) {
+if (
+    currentKanjiIndex >= exerciseKanjis.length
+) {
 
-        finishSeries();
-
+    if (currentSeries === -1) {
+        finishReviewTest();
     } else {
-
-        startKanji();
-
+        finishSeries();
     }
-}
 
+} else {
+
+    startKanji();
+}
+}
 
 /* =========================================================
    FIN DE SERIE
@@ -1574,4 +1605,54 @@ function getSeriesSentence(seriesNumber) {
     ];
 
     return sentences[seriesNumber];
+}
+
+function prepareReviewTest() {
+
+    currentKanjiIndex = 0;
+    score = 0;
+
+    document.getElementById("score").textContent = "";
+
+    startKanji();
+}
+
+function finishReviewTest() {
+
+    const totalQuestions = exerciseKanjis.length * 2;
+    const percentage = Math.round(
+        (score / totalQuestions) * 100
+    );
+
+    document.getElementById("question").textContent = "🧠";
+    document.getElementById("answers").innerHTML = "";
+
+    document.getElementById("stepTitle").textContent =
+        "Test de révision terminé";
+
+    document.getElementById("result").innerHTML = `
+        <div class="successMessage">
+            <strong>Test terminé !</strong>
+
+            <div style="font-size: 30px; margin: 15px 0;">
+                ${score} / ${totalQuestions}
+            </div>
+
+            Score : <strong>${percentage} %</strong>
+
+            <br><br>
+            Tu as révisé ${exerciseKanjis.length} kanji(s).
+        </div>
+    `;
+
+    document.getElementById("score").textContent = "";
+
+    const button = document.getElementById("nextButton");
+
+    button.textContent = "🏠 Retour au menu";
+    button.style.display = "inline-block";
+    button.onclick = function () {
+        showMenu();
+        button.onclick = nextStep;
+    };
 }
