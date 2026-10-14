@@ -204,10 +204,18 @@ function ensureKanjiPreview() {
     const style = document.createElement("style");
     style.textContent = `
         #kanjiPreviewOverlay {
-            position: fixed; inset: 0; z-index: 9999; display: none;
-            align-items: center; justify-content: center; padding: 18px;
-            background: rgba(0,0,0,.55);
-        }
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(0,0,0,.55);
+}
         #kanjiPreviewCard {
             position: relative; box-sizing: border-box; width: min(100%, 440px);
             max-height: 90vh; overflow-y: auto; padding: 26px 22px;
