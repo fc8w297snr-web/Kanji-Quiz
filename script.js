@@ -194,6 +194,92 @@ function shuffle(array) {
 }
 
 
+
+/* =========================================================
+   APERCU D'UN KANJI
+========================================================= */
+function ensureKanjiPreview() {
+    if (document.getElementById("kanjiPreviewOverlay")) return;
+
+    const style = document.createElement("style");
+    style.textContent = `
+        #kanjiPreviewOverlay {
+            position: fixed; inset: 0; z-index: 9999; display: none;
+            align-items: center; justify-content: center; padding: 18px;
+            background: rgba(0,0,0,.55);
+        }
+        #kanjiPreviewCard {
+            position: relative; box-sizing: border-box; width: min(100%, 440px);
+            max-height: 90vh; overflow-y: auto; padding: 26px 22px;
+            border-radius: 20px; background: #fff; color: #243326;
+            text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,.25);
+        }
+        #kanjiPreviewClose {
+            position: absolute; top: 10px; right: 12px; border: 0;
+            border-radius: 50%; width: 36px; height: 36px; font-size: 23px;
+            cursor: pointer; background: #edf4ed;
+        }
+        #kanjiPreviewCharacter { font-size: 76px; line-height: 1.25; color: #236b3a; margin: 12px 0; }
+        #kanjiPreviewCard h3 { margin: 18px 0 6px; font-size: 16px; }
+        #kanjiPreviewReading { font-size: 23px; }
+        #kanjiPreviewMeaning { font-size: 18px; }
+        #kanjiPreviewJapanese { font-size: 23px; margin: 10px 0; }
+        #kanjiPreviewHiragana { color: #59665b; margin-bottom: 8px; }
+    `;
+    document.head.appendChild(style);
+
+    const overlay = document.createElement("div");
+    overlay.id = "kanjiPreviewOverlay";
+    overlay.innerHTML = `
+        <div id="kanjiPreviewCard" role="dialog" aria-modal="true">
+            <button id="kanjiPreviewClose" type="button" aria-label="Fermer">×</button>
+            <div id="kanjiPreviewCharacter"></div>
+            <h3>Lecture en hiragana</h3>
+            <div id="kanjiPreviewReading"></div>
+            <h3>Traduction</h3>
+            <div id="kanjiPreviewMeaning"></div>
+            <hr style="border:0;border-top:1px solid #e2e9e2;margin:20px 0">
+            <h3>Exemple de phrase</h3>
+            <div id="kanjiPreviewJapanese"></div>
+            <div id="kanjiPreviewHiragana"></div>
+            <div id="kanjiPreviewFrench"></div>
+        </div>`;
+    document.body.appendChild(overlay);
+
+    document.getElementById("kanjiPreviewClose").addEventListener("click", closeKanjiPreview);
+    overlay.addEventListener("click", function (event) {
+        if (event.target === overlay) closeKanjiPreview();
+    });
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeKanjiPreview();
+    });
+}
+
+function showKanjiPreview(index) {
+    const item = kanjis[index];
+    if (!item) return;
+    ensureKanjiPreview();
+
+    document.getElementById("kanjiPreviewCharacter").textContent = item.kanji;
+    document.getElementById("kanjiPreviewReading").textContent = item.hiragana;
+    document.getElementById("kanjiPreviewMeaning").textContent = item.francais;
+
+    // Phrase explicative générique : elle fonctionne pour chaque kanji de la liste.
+    document.getElementById("kanjiPreviewJapanese").textContent =
+        "「" + item.kanji + "」という漢字です。";
+    document.getElementById("kanjiPreviewHiragana").textContent =
+        "「" + item.hiragana + "」という かんじです。";
+    document.getElementById("kanjiPreviewFrench").textContent =
+        "C'est le kanji « " + item.francais + " ».";
+
+    document.getElementById("kanjiPreviewOverlay").style.display = "flex";
+}
+
+function closeKanjiPreview() {
+    const overlay = document.getElementById("kanjiPreviewOverlay");
+    if (overlay) overlay.style.display = "none";
+}
+
 /* =========================================================
    MENU
 ========================================================= */
@@ -262,6 +348,12 @@ function displayKanjiList() {
             button.classList.add(
                 "kanjiBox"
             );
+
+            button.type = "button";
+            button.title = "Cliquer pour voir les informations du kanji";
+            button.addEventListener("click", function () {
+                showKanjiPreview(j);
+            });
 
 
             if (
@@ -921,77 +1013,6 @@ if (
 ========================================================= */
 
 function finishSeries() {
-
-    const totalQuestions =
-        exerciseKanjis.length * 2;
-
-
-    const perfect =
-        score === totalQuestions;
-
-
-    /*
-       100 %
-    */
-
-    if (perfect) {
-
-        seriesSuccess[
-            currentSeries
-        ] =
-            (
-                seriesSuccess[
-                    currentSeries
-                ] || 0
-            ) + 1;
-
-
-        localStorage.setItem(
-            "seriesSuccess",
-            JSON.stringify(
-                seriesSuccess
-            )
-        );
-
-
-        if (
-            seriesSuccess[
-                currentSeries
-            ] >= 3
-        ) {
-
-            validateSeries();
-
-        } else {
-
-            showPerfectResult();
-
-        }
-
-
-    } else {
-
-        /*
-           Une seule erreur =
-           retour à 0
-        */
-
-        seriesSuccess[
-            currentSeries
-        ] = 0;
-
-
-        localStorage.setItem(
-            "seriesSuccess",
-            JSON.stringify(
-                seriesSuccess
-            )
-        );
-
-
-        showFailedResult();
-    }
-}function finishSeries() {
 
     const totalQuestions =
         exerciseKanjis.length * 2;
