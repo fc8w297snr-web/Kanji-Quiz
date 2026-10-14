@@ -195,6 +195,540 @@ function shuffle(array) {
 
 
 
+/* Exemples de phrases propres à chaque kanji : japonais, lecture complète en hiragana, traduction française. */
+const exemplesKanji = {
+    "一": [
+        "りんごを一つください。",
+        "りんごをひとつください。",
+        "Un pomme, s’il vous plaît."
+    ],
+    "二": [
+        "二時に会いましょう。",
+        "にじにあいましょう。",
+        "Retrouvons-nous à deux heures."
+    ],
+    "三": [
+        "三人で行きます。",
+        "さんにんでいきます。",
+        "Nous y allons à trois."
+    ],
+    "四": [
+        "四時に帰ります。",
+        "よじにかえります。",
+        "Je rentre à quatre heures."
+    ],
+    "五": [
+        "五分待ってください。",
+        "ごふんまってください。",
+        "Attendez cinq minutes, s’il vous plaît."
+    ],
+    "六": [
+        "六時に起きます。",
+        "ろくじにおきます。",
+        "Je me lève à six heures."
+    ],
+    "七": [
+        "七月に日本へ行きます。",
+        "しちがつににほんへいきます。",
+        "Je vais au Japon en juillet."
+    ],
+    "八": [
+        "八時から勉強します。",
+        "はちじからべんきょうします。",
+        "J’étudie à partir de huit heures."
+    ],
+    "九": [
+        "九時に学校が始まります。",
+        "くじにがっこうがはじまります。",
+        "L’école commence à neuf heures."
+    ],
+    "十": [
+        "十人の学生がいます。",
+        "じゅうにんのがくせいがいます。",
+        "Il y a dix étudiants."
+    ],
+    "百": [
+        "この本は百円です。",
+        "このほんはひゃくえんです。",
+        "Ce livre coûte 100 yens."
+    ],
+    "千": [
+        "駅まで千メートルです。",
+        "えきまでせんめーとるです。",
+        "Il y a mille mètres jusqu’à la gare."
+    ],
+    "万": [
+        "一万円を持っています。",
+        "いちまんえんをもっています。",
+        "J’ai dix mille yens."
+    ],
+    "円": [
+        "水は百円です。",
+        "みずはひゃくえんです。",
+        "L’eau coûte 100 yens."
+    ],
+    "日": [
+        "今日はいい日です。",
+        "きょうはいいひです。",
+        "Aujourd’hui est une bonne journée."
+    ],
+    "月": [
+        "月がきれいです。",
+        "つきがきれいです。",
+        "La lune est belle."
+    ],
+    "火": [
+        "火を使わないでください。",
+        "ひをつかわないでください。",
+        "Veuillez ne pas utiliser de feu."
+    ],
+    "水": [
+        "毎日、水を飲みます。",
+        "まいにち、みずをのみます。",
+        "Je bois de l’eau tous les jours."
+    ],
+    "木": [
+        "庭に木があります。",
+        "にわにきがあります。",
+        "Il y a un arbre dans le jardin."
+    ],
+    "金": [
+        "お金がありません。",
+        "おかねがありません。",
+        "Je n’ai pas d’argent."
+    ],
+    "土": [
+        "土がぬれています。",
+        "つちがぬれています。",
+        "La terre est mouillée."
+    ],
+    "年": [
+        "今年、日本へ行きます。",
+        "ことし、にほんへいきます。",
+        "Cette année, je vais au Japon."
+    ],
+    "今": [
+        "今、勉強しています。",
+        "いま、べんきょうしています。",
+        "J’étudie en ce moment."
+    ],
+    "前": [
+        "駅の前で会いましょう。",
+        "えきのまえであいましょう。",
+        "Retrouvons-nous devant la gare."
+    ],
+    "後": [
+        "学校の後で帰ります。",
+        "がっこうのあとでかえります。",
+        "Je rentre après l’école."
+    ],
+    "間": [
+        "一時間、日本語を勉強します。",
+        "いちじかん、にほんごをべんきょうします。",
+        "J’étudie le japonais pendant une heure."
+    ],
+    "毎": [
+        "毎朝、コーヒーを飲みます。",
+        "まいあさ、こーひーをのみます。",
+        "Je bois du café chaque matin."
+    ],
+    "午": [
+        "午前八時に起きます。",
+        "ごぜんはちじにおきます。",
+        "Je me lève à huit heures du matin."
+    ],
+    "半": [
+        "三時半に来てください。",
+        "さんじはんにきてください。",
+        "Venez à trois heures et demie, s’il vous plaît."
+    ],
+    "時": [
+        "今、何時ですか。",
+        "いま、なんじですか。",
+        "Quelle heure est-il ?"
+    ],
+    "分": [
+        "あと五分です。",
+        "あとごふんです。",
+        "Encore cinq minutes."
+    ],
+    "上": [
+        "本は机の上にあります。",
+        "ほんはつくえのうえにあります。",
+        "Le livre est sur le bureau."
+    ],
+    "下": [
+        "猫は机の下にいます。",
+        "ねこはつくえのしたにいます。",
+        "Le chat est sous le bureau."
+    ],
+    "中": [
+        "箱の中に何がありますか。",
+        "はこのなかになにがありますか。",
+        "Qu’y a-t-il dans la boîte ?"
+    ],
+    "外": [
+        "外は寒いです。",
+        "そとはさむいです。",
+        "Il fait froid dehors."
+    ],
+    "左": [
+        "左に曲がってください。",
+        "ひだりにまがってください。",
+        "Tournez à gauche, s’il vous plaît."
+    ],
+    "右": [
+        "右に銀行があります。",
+        "みぎにぎんこうがあります。",
+        "Il y a une banque à droite."
+    ],
+    "北": [
+        "北の町に住んでいます。",
+        "きたのまちにすんでいます。",
+        "J’habite dans une ville du nord."
+    ],
+    "南": [
+        "南の国へ行きたいです。",
+        "みなみのくにへいきたいです。",
+        "Je veux aller dans un pays du sud."
+    ],
+    "東": [
+        "東の空が明るいです。",
+        "ひがしのそらがあかるいです。",
+        "Le ciel à l’est est lumineux."
+    ],
+    "西": [
+        "西の山が見えます。",
+        "にしのやまがみえます。",
+        "On voit les montagnes à l’ouest."
+    ],
+    "大": [
+        "大きい犬がいます。",
+        "おおきいいぬがいます。",
+        "Il y a un grand chien."
+    ],
+    "小": [
+        "小さい店に入りました。",
+        "ちいさいみせにはいりました。",
+        "Je suis entré dans une petite boutique."
+    ],
+    "高": [
+        "この山はとても高いです。",
+        "このやまはとてもたかいです。",
+        "Cette montagne est très haute."
+    ],
+    "安": [
+        "この店は安いです。",
+        "このみせはやすいです。",
+        "Ce magasin est bon marché."
+    ],
+    "新": [
+        "新しい車を買いました。",
+        "あたらしいくるまをかいました。",
+        "J’ai acheté une nouvelle voiture."
+    ],
+    "古": [
+        "古い本を読みます。",
+        "ふるいほんをよみます。",
+        "Je lis un vieux livre."
+    ],
+    "長": [
+        "長い道を歩きました。",
+        "ながいみちをあるきました。",
+        "J’ai marché sur une longue route."
+    ],
+    "多": [
+        "この町は人が多いです。",
+        "このまちはひとがおおいです。",
+        "Il y a beaucoup de monde dans cette ville."
+    ],
+    "少": [
+        "今日は時間が少ないです。",
+        "きょうはじかんがすくないです。",
+        "Aujourd’hui, j’ai peu de temps."
+    ],
+    "白": [
+        "白い猫がいます。",
+        "しろいねこがいます。",
+        "Il y a un chat blanc."
+    ],
+    "黒": [
+        "黒いかばんを使います。",
+        "くろいかばんをつかいます。",
+        "J’utilise un sac noir."
+    ],
+    "赤": [
+        "赤い花が好きです。",
+        "あかいはながすきです。",
+        "J’aime les fleurs rouges."
+    ],
+    "青": [
+        "青い空を見ました。",
+        "あおいそらをみました。",
+        "J’ai regardé le ciel bleu."
+    ],
+    "天": [
+        "天気がいいですね。",
+        "てんきがいいですね。",
+        "Il fait beau, n’est-ce pas ?"
+    ],
+    "気": [
+        "元気ですか。",
+        "げんきですか。",
+        "Comment allez-vous ?"
+    ],
+    "雨": [
+        "今日は雨が降っています。",
+        "きょうはあめがふっています。",
+        "Il pleut aujourd’hui."
+    ],
+    "電": [
+        "電気を消してください。",
+        "でんきをけしてください。",
+        "Éteignez la lumière, s’il vous plaît."
+    ],
+    "車": [
+        "車で学校へ行きます。",
+        "くるまでがっこうへいきます。",
+        "Je vais à l’école en voiture."
+    ],
+    "駅": [
+        "駅で友だちを待ちます。",
+        "えきでともだちをまちます。",
+        "J’attends un ami à la gare."
+    ],
+    "山": [
+        "日曜日に山へ行きます。",
+        "にちようびにやまへいきます。",
+        "Je vais à la montagne dimanche."
+    ],
+    "川": [
+        "川で泳ぎません。",
+        "かわでおよぎません。",
+        "Je ne nage pas dans la rivière."
+    ],
+    "田": [
+        "田んぼに水があります。",
+        "たんぼにみずがあります。",
+        "Il y a de l’eau dans la rizière."
+    ],
+    "人": [
+        "あの人は先生です。",
+        "あのひとはせんせいです。",
+        "Cette personne est professeur."
+    ],
+    "女": [
+        "あの女の人は友だちです。",
+        "あのおんなのひとはともだちです。",
+        "Cette femme est une amie."
+    ],
+    "男": [
+        "男の子が走っています。",
+        "おとこのこがはしっています。",
+        "Un garçon court."
+    ],
+    "子": [
+        "子どもが公園で遊んでいます。",
+        "こどもがこうえんであそんでいます。",
+        "Un enfant joue dans le parc."
+    ],
+    "父": [
+        "父は毎朝コーヒーを飲みます。",
+        "ちちはまいあさこーひーをのみます。",
+        "Mon père boit du café chaque matin."
+    ],
+    "母": [
+        "母は料理が上手です。",
+        "はははりょうりがじょうずです。",
+        "Ma mère cuisine bien."
+    ],
+    "友": [
+        "友だちと映画を見ます。",
+        "ともだちとえいがをみます。",
+        "Je regarde un film avec un ami."
+    ],
+    "先": [
+        "先生に質問します。",
+        "せんせいにしつもんします。",
+        "Je pose une question au professeur."
+    ],
+    "生": [
+        "学生です。",
+        "がくせいです。",
+        "Je suis étudiant."
+    ],
+    "学": [
+        "毎日、日本語を学びます。",
+        "まいにち、にほんごをまなびます。",
+        "J’apprends le japonais tous les jours."
+    ],
+    "校": [
+        "学校は八時に始まります。",
+        "がっこうははちじにはじまります。",
+        "L’école commence à huit heures."
+    ],
+    "本": [
+        "日本語の本を読みます。",
+        "にほんごのほんをよみます。",
+        "Je lis un livre de japonais."
+    ],
+    "名": [
+        "お名前は何ですか。",
+        "おなまえはなんですか。",
+        "Quel est votre nom ?"
+    ],
+    "語": [
+        "日本語を話します。",
+        "にほんごをはなします。",
+        "Je parle japonais."
+    ],
+    "文": [
+        "短い文を書きます。",
+        "みじかいぶんをかきます。",
+        "J’écris une phrase courte."
+    ],
+    "字": [
+        "この字を読めますか。",
+        "このじをよめますか。",
+        "Pouvez-vous lire ce caractère ?"
+    ],
+    "国": [
+        "日本は好きな国です。",
+        "にほんはすきなくにです。",
+        "Le Japon est un pays que j’aime."
+    ],
+    "店": [
+        "あの店でパンを買います。",
+        "あのみせでぱんをかいます。",
+        "J’achète du pain dans cette boutique."
+    ],
+    "何": [
+        "何を食べますか。",
+        "なにをたべますか。",
+        "Qu’allez-vous manger ?"
+    ],
+    "行": [
+        "明日、学校へ行きます。",
+        "あした、がっこうへいきます。",
+        "Demain, je vais à l’école."
+    ],
+    "来": [
+        "友だちが家に来ます。",
+        "ともだちがいえにきます。",
+        "Un ami vient chez moi."
+    ],
+    "帰": [
+        "六時に家へ帰ります。",
+        "ろくじにいえへかえります。",
+        "Je rentre chez moi à six heures."
+    ],
+    "見": [
+        "テレビを見ます。",
+        "てれびをみます。",
+        "Je regarde la télévision."
+    ],
+    "聞": [
+        "音楽を聞きます。",
+        "おんがくをききます。",
+        "J’écoute de la musique."
+    ],
+    "話": [
+        "先生と日本語で話します。",
+        "せんせいとにほんごではなします。",
+        "Je parle japonais avec le professeur."
+    ],
+    "読": [
+        "毎晩、本を読みます。",
+        "まいばん、ほんをよみます。",
+        "Je lis un livre chaque soir."
+    ],
+    "書": [
+        "ノートに名前を書きます。",
+        "のーとになまえをかきます。",
+        "J’écris mon nom dans le cahier."
+    ],
+    "食": [
+        "朝ご飯を食べます。",
+        "あさごはんをたべます。",
+        "Je prends mon petit-déjeuner."
+    ],
+    "飲": [
+        "水を飲んでください。",
+        "みずをのんでください。",
+        "Buvez de l’eau, s’il vous plaît."
+    ],
+    "買": [
+        "スーパーで野菜を買います。",
+        "すーぱーでやさいをかいます。",
+        "J’achète des légumes au supermarché."
+    ],
+    "会": [
+        "駅で友だちに会います。",
+        "えきでともだちにあいます。",
+        "Je retrouve un ami à la gare."
+    ],
+    "休": [
+        "日曜日は家で休みます。",
+        "にちようびはいえでやすみます。",
+        "Je me repose à la maison le dimanche."
+    ],
+    "入": [
+        "部屋に入ってください。",
+        "へやにはいってください。",
+        "Entrez dans la pièce, s’il vous plaît."
+    ],
+    "出": [
+        "家を七時に出ます。",
+        "いえをしちじにでます。",
+        "Je pars de chez moi à sept heures."
+    ],
+    "立": [
+        "ここに立ってください。",
+        "ここにたってください。",
+        "Tenez-vous debout ici, s’il vous plaît."
+    ],
+    "開": [
+        "窓を開けます。",
+        "まどをあけます。",
+        "J’ouvre la fenêtre."
+    ],
+    "閉": [
+        "ドアを閉めてください。",
+        "どあをしめてください。",
+        "Fermez la porte, s’il vous plaît."
+    ],
+    "作": [
+        "母とケーキを作ります。",
+        "ははとけーきをつくります。",
+        "Je prépare un gâteau avec ma mère."
+    ],
+    "使": [
+        "このペンを使います。",
+        "このぺんをつかいます。",
+        "J’utilise ce stylo."
+    ],
+    "住": [
+        "東京に住んでいます。",
+        "とうきょうにすんでいます。",
+        "J’habite à Tokyo."
+    ],
+    "思": [
+        "そう思います。",
+        "そうおもいます。",
+        "C’est ce que je pense."
+    ],
+    "知": [
+        "その人を知っています。",
+        "そのひとをしっています。",
+        "Je connais cette personne."
+    ],
+    "言": [
+        "もう一度言ってください。",
+        "もういちどいってください。",
+        "Répétez encore une fois, s’il vous plaît."
+    ]
+};
+
 /* =========================================================
    APERCU D'UN KANJI
 ========================================================= */
@@ -204,18 +738,10 @@ function ensureKanjiPreview() {
     const style = document.createElement("style");
     style.textContent = `
         #kanjiPreviewOverlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 99999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 18px;
-    background: rgba(0,0,0,.55);
-}
+            position: fixed; inset: 0; z-index: 9999; display: none;
+            align-items: center; justify-content: center; padding: 18px;
+            background: rgba(0,0,0,.55);
+        }
         #kanjiPreviewCard {
             position: relative; box-sizing: border-box; width: min(100%, 440px);
             max-height: 90vh; overflow-y: auto; padding: 26px 22px;
@@ -272,13 +798,14 @@ function showKanjiPreview(index) {
     document.getElementById("kanjiPreviewReading").textContent = item.hiragana;
     document.getElementById("kanjiPreviewMeaning").textContent = item.francais;
 
-    // Phrase explicative générique : elle fonctionne pour chaque kanji de la liste.
+    // Affiche une vraie phrase d'exemple adaptée au kanji sélectionné.
+    const exemple = exemplesKanji[item.kanji];
     document.getElementById("kanjiPreviewJapanese").textContent =
-        "「" + item.kanji + "」という漢字です。";
+        exemple ? exemple[0] : "例文はまだありません。";
     document.getElementById("kanjiPreviewHiragana").textContent =
-        "「" + item.hiragana + "」という かんじです。";
+        exemple ? exemple[1] : "れいぶんはまだありません。";
     document.getElementById("kanjiPreviewFrench").textContent =
-        "C'est le kanji « " + item.francais + " ».";
+        exemple ? exemple[2] : "Exemple à ajouter.";
 
     document.getElementById("kanjiPreviewOverlay").style.display = "flex";
 }
